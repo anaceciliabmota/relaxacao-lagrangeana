@@ -4,21 +4,23 @@ Solucao BnB (vvi& cost, int branching_strategy, int nodes, double ub){
     list<Node>::iterator it;
     Node root;
 	vector<double> lambdas(nodes,0);
+	cout << lambdas[0] << lambdas.size() << endl;
 	root.lambdas = lambdas;
 	root.lower_bound = -numeric_limits<double>::infinity();
 
     solve_lagrangean(cost, ub, nodes, &root);
 
+	//exit(0);
     list<Node> tree;
     tree.push_back(root);
 
-    double upper_bound = ub;//numeric_limits<double>::infinity();
+    double upper_bound = ub;
 	Solucao s;
 
     int cont = 0;
 	while (!tree.empty())
 	{
-		cout << "ITERAÇÃO " << cont << " DO BRANCH AND BOUND" << endl;
+		cout << "ITERAÇÃO " << cont << " DO BRANCH AND BOUND. TAMANHO: " << tree.size() << endl;
     
 		//cout << "tree: " <<  tree.size() << endl;
 		cont++;
@@ -35,6 +37,7 @@ Solucao BnB (vvi& cost, int branching_strategy, int nodes, double ub){
 		{	
 			cout << "VIAVEL" << endl;
 			if(node.lower_bound - 1e-5 < upper_bound){
+				upper_bound = node.lower_bound;
 				s.valorObj = node.lower_bound;
 				s.arestas = node.solution;
 			}
@@ -56,7 +59,8 @@ Solucao BnB (vvi& cost, int branching_strategy, int nodes, double ub){
                 if(node.solution[i].first == index || node.solution[i].second == index){
                     Node n;
 					n.lambdas = node.lambdas;
-                    n.lower_bound = node.lower_bound;
+					n.lower_bound = -numeric_limits<double>::infinity();
+                    //n.lower_bound = node.lower_bound;
                     n.forbidden_arcs = node.forbidden_arcs;
                     pair<int, int> forbidden_arc = node.solution[i];
                     n.forbidden_arcs.push_back(forbidden_arc);
@@ -66,7 +70,6 @@ Solucao BnB (vvi& cost, int branching_strategy, int nodes, double ub){
             }
             
 		}
-		
 		tree.erase(it);
 	}
     return s;

@@ -91,6 +91,13 @@ void solve_lagrangean(vvi& original_cost, double upperbound, int nodes, Node * n
     //custo com os arcos proibidos
     vvi costs = original_cost;
     turn_forbidden(node, costs);
+
+    /*for (int i = 0; i < nodes; i++){
+        for(int j =0; j < nodes; j++){
+            cout << costs[i][j] << " ";
+        }
+        cout << endl;
+    }*/
     
     //custos que terao os lambdas adicionados 
     vvi costs_with_lambda = costs;
@@ -149,23 +156,15 @@ void solve_lagrangean(vvi& original_cost, double upperbound, int nodes, Node * n
             //cout << graus[i] << " ";
             if(2 - graus[i] != 0){
                 feasibility = false;
-                //break;
+                break;
             }
         }
-        //cout << endl;
 
-        /*for(int i = 0; i < solution.size(); i++){
-            cout << solution[i].first << " " << solution[i].second << endl;
-        }*/
-        
 
-        if(w > node->lower_bound - 1e-5){
+        if(w > node->lower_bound){
             node->feasible = feasibility;
             cout << w << " " << node->feasible << endl;
-            //cout << "solution: " << endl;
-            /*for(int i = 0; i < solution.size(); i++){
-                cout << solution[i].first << " " << solution[i].second << endl;
-            }*/
+            
             node->lower_bound = w;
             node->solution = solution;
             node->lambdas = lambda;
@@ -179,11 +178,14 @@ void solve_lagrangean(vvi& original_cost, double upperbound, int nodes, Node * n
             }
         }
 
+
+        continua = criterioParada(epsilon, solution, nodes, lambda);
+
         for(int i = 0; i < nodes; i++){
             lambda[i] = lambda[i] + mi*(2 - graus[i]);
         }
         
-        continua = criterioParada(epsilon, solution, nodes, lambda);
+        
     }
 
 }

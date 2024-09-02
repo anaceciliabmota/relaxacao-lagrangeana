@@ -28,7 +28,7 @@ int main(int argc, char **argv){
 	}
 
     Solucao s;
-    s = BnB(cost, 1, nodes, ub);
+    s = BnB(cost, 1, nodes, ub+1);
     end = clock();
     
     cout << "Solucao:" << endl;
