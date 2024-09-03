@@ -1,14 +1,16 @@
 #include "BranchAndBound.h"
 
+#define EPSILON 1e-5
+
 Solucao BnB (vvi& cost, int branching_strategy, int nodes, double ub){
     list<Node>::iterator it;
     Node root;
 	vector<double> lambdas(nodes,0);
-	cout << lambdas[0] << lambdas.size() << endl;
+	
 	root.lambdas = lambdas;
 	root.lower_bound = -numeric_limits<double>::infinity();
 
-    solve_lagrangean(cost, ub, nodes, &root);
+    solve_lagrangian(cost, ub, nodes, &root);
 
 	//exit(0);
     list<Node> tree;
@@ -20,23 +22,20 @@ Solucao BnB (vvi& cost, int branching_strategy, int nodes, double ub){
     int cont = 0;
 	while (!tree.empty())
 	{
-		cout << "ITERAÇÃO " << cont << " DO BRANCH AND BOUND. TAMANHO: " << tree.size() << endl;
-    
-		//cout << "tree: " <<  tree.size() << endl;
-		cont++;
+		
 		Node node = select_node(2, tree, it);
-		solve_lagrangean(cost, upper_bound, nodes, &node);
+		solve_lagrangian(cost, upper_bound, nodes, &node);
 
 
-		if (node.lower_bound > upper_bound)
+		if (node.lower_bound - EPSILON > upper_bound)
 		{
 			tree.erase(it);
 			continue;
 		}
 		if (node.feasible)
-		{	
-			cout << "VIAVEL" << endl;
-			if(node.lower_bound - 1e-5 < upper_bound){
+		{	 
+			if(node.lower_bound + EPSILON < upper_bound){
+				//cout << cont << ": obj = " << node.lower_bound << endl;
 				upper_bound = node.lower_bound;
 				s.valorObj = node.lower_bound;
 				s.arestas = node.solution;
@@ -49,18 +48,11 @@ Solucao BnB (vvi& cost, int branching_strategy, int nodes, double ub){
             auto max_it = max_element(graus.begin(), graus.end());
             int index = distance(graus.begin(), max_it);
 
-			/*cout << "SOLUTION" << endl;
-			for(int i = 0; i < node.solution.size(); i++){
-				cout << node.solution[i].first << " " << node.solution[i].second << endl;
-			}
-            cout << "indice de maior grau: "  << index << endl;
-			*/
             for(int i = 0; i < node.solution.size(); i++){
                 if(node.solution[i].first == index || node.solution[i].second == index){
                     Node n;
 					n.lambdas = node.lambdas;
 					n.lower_bound = -numeric_limits<double>::infinity();
-                    //n.lower_bound = node.lower_bound;
                     n.forbidden_arcs = node.forbidden_arcs;
                     pair<int, int> forbidden_arc = node.solution[i];
                     n.forbidden_arcs.push_back(forbidden_arc);
@@ -71,6 +63,7 @@ Solucao BnB (vvi& cost, int branching_strategy, int nodes, double ub){
             
 		}
 		tree.erase(it);
+		cont++;
 	}
     return s;
 }
@@ -100,7 +93,7 @@ void exibirSolucao(Solucao *s)
 		}
 	}
 	cout << endl;
-	cout << "z: " << s->valorObj << endl;
+	
 
 }
 

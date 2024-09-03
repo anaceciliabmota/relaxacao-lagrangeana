@@ -1,0 +1,136 @@
+instances/att48.tsp
+OPTIMAL SOLUTION FOUND
+Z = 10628
+TIME USED: 1.275610 secs
+
+instances/bayg29.tsp
+OPTIMAL SOLUTION FOUND
+Z = 1610
+TIME USED: 0.090328 secs
+
+instances/bays29.tsp
+OPTIMAL SOLUTION FOUND
+Z = 2020
+TIME USED: 0.126892 secs
+
+instances/berlin52.tsp
+OPTIMAL SOLUTION FOUND
+Z = 7542
+TIME USED: 0.112105 secs
+
+instances/brazil58.tsp
+OPTIMAL SOLUTION FOUND
+Z = 25395
+TIME USED: 0.612961 secs
+
+instances/burma14.tsp
+OPTIMAL SOLUTION FOUND
+Z = 3323
+TIME USED: 0.003426 secs
+
+instances/dantzig42.tsp
+OPTIMAL SOLUTION FOUND
+Z = 699
+TIME USED: 0.144170 secs
+
+instances/eil51.tsp
+OPTIMAL SOLUTION FOUND
+Z = 426
+TIME USED: 73.260223 secs
+OPTIMAL SOLUTION FOUND
+Z = 426
+TIME USED: 73.108823 secs
+
+instances/eil76.tsp
+OPTIMAL SOLUTION FOUND
+Z = 538
+TIME USED: 167.887961 secs
+
+instances/fri26.tsp
+OPTIMAL SOLUTION FOUND
+Z = 937
+TIME USED: 0.030868 secs
+
+instances/gr17.tsp
+OPTIMAL SOLUTION FOUND
+Z = 2085
+TIME USED: 0.005731 secs
+
+instances/gr21.tsp
+OPTIMAL SOLUTION FOUND
+Z = 2707
+TIME USED: 0.009094 secs
+
+instances/gr24.tsp
+OPTIMAL SOLUTION FOUND
+Z = 1272
+TIME USED: 0.040122 secs
+
+instances/gr48.tsp
+OPTIMAL SOLUTION FOUND
+Z = 5046
+TIME USED: 168.572145 secs
+
+instances/gr96.tsp
+Execução interrompida após atingir o tempo limite de 10m.
+
+instances/hk48.tsp
+OPTIMAL SOLUTION FOUND
+Z = 11461
+TIME USED: 0.251667 secs
+
+instances/kroA100.tsp
+Execução interrompida após atingir o tempo limite de 10m.
+
+instances/kroB100.tsp
+Execução interrompida após atingir o tempo limite de 10m.
+
+instances/kroC100.tsp
+Execução interrompida após atingir o tempo limite de 10m.
+
+instances/kroD100.tsp
+OPTIMAL SOLUTION FOUND
+Z = 21294
+TIME USED: 122.744900 secs
+
+instances/kroE100.tsp
+Execução interrompida após atingir o tempo limite de 10m.
+
+instances/lin105.tsp
+OPTIMAL SOLUTION FOUND
+Z = 14379
+TIME USED: 1.513723 secs
+
+instances/pr76.tsp
+Execução interrompida após atingir o tempo limite de 10m.
+
+instances/rat99.tsp
+OPTIMAL SOLUTION FOUND
+Z = 1211
+TIME USED: 43.349948 secs
+
+instances/rd100.tsp
+OPTIMAL SOLUTION FOUND
+Z = 7910
+TIME USED: 7.151517 secs
+
+instances/st70.tsp
+OPTIMAL SOLUTION FOUND
+Z = 675
+TIME USED: 43.251114 secs
+
+instances/swiss42.tsp
+OPTIMAL SOLUTION FOUND
+Z = 1273
+TIME USED: 0.233530 secs
+
+instances/ulysses16.tsp
+OPTIMAL SOLUTION FOUND
+Z = 6859
+TIME USED: 0.005338 secs
+
+instances/ulysses22.tsp
+OPTIMAL SOLUTION FOUND
+Z = 7013
+TIME USED: 0.019946 secs
+

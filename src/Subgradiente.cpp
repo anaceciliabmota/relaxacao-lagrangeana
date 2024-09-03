@@ -1,22 +1,9 @@
 #include "Subgradiente.h"
 
-#define EPSILON_MIN 5e-4
 
 //colocar o vertice zero na solucao
 
 
-
-void calculaGrau(vii& solution, int nodes, vector<int>& g){
-    vector<int> graus(nodes);
-    for(int i = 0; i < nodes; i++){
-        graus[i] = 0;
-    }
-    for(int i = 0; i < solution.size(); i++){
-        graus[solution[i].first]++;
-        graus[solution[i].second]++;
-    }
-    g = graus;
-}
 
 void adicionaOrigem(vii& solution, double * w, vvi& costs, int nodes){
 
@@ -43,33 +30,18 @@ void adicionaOrigem(vii& solution, double * w, vvi& costs, int nodes){
     solution.push_back(make_pair(0, v2));
 }
 
-
-bool criterioParada(double epsilon, vii& solution, int nodes, vector<double>& lambda){
-    bool continua = true;
-
-    if(epsilon < EPSILON_MIN) 
-        continua = false;
-    else{
-        vector<int> graus;
-        calculaGrau(solution, nodes, graus);
-        //cout << "GRAUS 2: ";
-        /*for(int i = 0; i < nodes; i++){
-            cout << graus[i] << " ";
-        }*/
-        //cout << endl;
-        continua = false;
-        for(int i = 0; i < nodes; i++){
-            
-            if((2 - graus[i]) != 0){
-                continua = true;
-                break;
-            }   
-        }
-        
+void calculaGrau(vii& solution, int nodes, vector<int>& g){
+    vector<int> graus(nodes);
+    for(int i = 0; i < nodes; i++){
+        graus[i] = 0;
     }
-    
-    return continua;
+    for(int i = 0; i < solution.size(); i++){
+        graus[solution[i].first]++;
+        graus[solution[i].second]++;
+    }
+    g = graus;
 }
+
 
 void refatoraCustos(vector<double>& lambda, int nodes, vvi& costs, vvi& lagrangean_costs, vvi& costs_with_lambda){
     for(int i = 0; i < nodes; i++){
@@ -85,26 +57,19 @@ void refatoraCustos(vector<double>& lambda, int nodes, vvi& costs, vvi& lagrange
     }
 }
 
-void solve_lagrangean(vvi& original_cost, double upperbound, int nodes, Node * node){
-    //definindo as variaveis de inicio(lambda, epsilon e k)
+void solve_lagrangian(vvi& original_cost, double upperbound, int nodes, Node * node){
+    /////definindo as variaveis de inicio(lambda, epsilon e k)/////
     
     //custo com os arcos proibidos
     vvi costs = original_cost;
     turn_forbidden(node, costs);
-
-    /*for (int i = 0; i < nodes; i++){
-        for(int j =0; j < nodes; j++){
-            cout << costs[i][j] << " ";
-        }
-        cout << endl;
-    }*/
     
     //custos que terao os lambdas adicionados 
     vvi costs_with_lambda = costs;
 
     vector<double> lambda = node->lambdas;
     
-    double epsilon = 1;
+    double epsilon = (nodes > 60 ? 2 : 1);
 
     int k = 0;
 
@@ -132,24 +97,24 @@ void solve_lagrangean(vvi& original_cost, double upperbound, int nodes, Node * n
         //incrementando o somatorio de lambda * 2 ao custo (conforme modelo)
         double soma_lambdas = 0;
 
+        //soma necessaria para seguir modelo
         for(int i = 1; i < nodes; i++){
             soma_lambdas += lambda[i];
         }
-
         w += 2*soma_lambdas;
-
-        //nessa solucao, i nao necessariamente eh menor que j
-        
-        //calculo do mi
-        double soma_restricao = somaGraus(solution, nodes);
-        double mi = epsilon*(upperbound - w)/soma_restricao;
-        //cout << mi << endl;
-
 
         //vetor com os graus dos vertices
         vector<int> graus;
         calculaGrau(solution, nodes, graus);
-        //cout << "GRAUS: " ; 
+
+        /*for(int i = 0; i < nodes; i++){
+            cout << graus[i] << " ";
+        }*/
+        
+        //calculo do mi
+        double soma_restricao = somaGraus(graus, nodes);
+        double mi = epsilon*(upperbound - w)/soma_restricao;
+        //cout << mi << endl;
 
         feasibility = true;
         for(int i = 0; i < nodes; i++){
@@ -160,15 +125,23 @@ void solve_lagrangean(vvi& original_cost, double upperbound, int nodes, Node * n
             }
         }
 
+        //atualizando lambda
+        for(int i = 0; i < nodes; i++){
+            lambda[i] = lambda[i] + mi*(2 - graus[i]);
+        }
 
-        if(w > node->lower_bound){
+        if(w > node->lower_bound + EPSILON){
             node->feasible = feasibility;
-            cout << w << " " << node->feasible << endl;
-            
             node->lower_bound = w;
             node->solution = solution;
             node->lambdas = lambda;
             k = 0;
+        }else if(feasibility){
+            node->feasible = feasibility;
+            node->lower_bound = w;
+            node->solution = solution;
+            node->lambdas = lambda;
+            continua = false;
         }
         else{
             k++;
@@ -178,24 +151,18 @@ void solve_lagrangean(vvi& original_cost, double upperbound, int nodes, Node * n
             }
         }
 
-
-        continua = criterioParada(epsilon, solution, nodes, lambda);
-
-        for(int i = 0; i < nodes; i++){
-            lambda[i] = lambda[i] + mi*(2 - graus[i]);
-        }
-        
-        
+        if(upperbound - node->lower_bound <= TOL)
+            continua = false;
+        if(epsilon < EPSILON_MIN)
+            continua = false;
     }
 
 }
 
 //faz o somatorio de (b-Ax) ao quadrado
-double somaGraus(vii& solution, int nodes){
+double somaGraus(vector<int>& graus, int nodes){
     
     double soma = 0;
-    vector<int> graus;
-    calculaGrau(solution, nodes, graus);
 
     for(int i = 0; i < nodes; i++){
         soma += (2 - graus[i])*(2 - graus[i]);

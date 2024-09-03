@@ -9,9 +9,18 @@ int main(int argc, char **argv){
     clock_t start, end;
     start = clock();
 
+
+    double ub;
+    if(argv[2])
+        ub = stod(argv[2]);
+    else{
+         cout << "Missing upperbound" << endl;
+         exit(0);
+    }
+    
 	Data *data = new Data(argc, argv[1]);
-	
-    double ub = stod(argv[2]);
+
+    //cout << "Reading data..." << endl;
 	data->readData();
 
     
@@ -28,18 +37,20 @@ int main(int argc, char **argv){
 	}
 
     Solucao s;
-    s = BnB(cost, 1, nodes, ub+1);
+
+    //cout << "Solving..." << endl;
+    s = BnB(cost, 1, nodes, ub);
     end = clock();
     
-    cout << "Solucao:" << endl;
-    exibirSolucao(&s);
+    cout << "OPTIMAL SOLUTION FOUND" << endl;
+    cout << "Z = "  << s.valorObj << endl;
+    //exibirSolucao(&s);
 
     double time_taken = double(end - start) / double(CLOCKS_PER_SEC);
-    cout << "tempo gasto: " << fixed << time_taken;
+    cout << "TIME USED: " << fixed << time_taken;
     cout << " secs" << endl;
 
-
-    
+    delete data;
 
     return 0;
 }

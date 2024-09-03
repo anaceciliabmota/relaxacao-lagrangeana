@@ -7,6 +7,11 @@
 #include <algorithm>
 #include <iomanip>
 
+#define TOL 0.00001
+#define EPSILON_MIN 0.0005
+#define EPSILON 1e-5
+
+
 struct Node
 {
     vii solution;
@@ -17,13 +22,12 @@ struct Node
 } typedef Node;
 
 
-void solve_lagrangean(vvi& costs, double upperbound, int nodes, Node * node);
-bool criterioParada(double epsilon, vii& solution, int nodes,  vector<double>& lambda);
+void solve_lagrangian(vvi& costs, double upperbound, int nodes, Node * node);
+bool criterioParada(double epsilon);
 void calculaGrau(vii& solution, int nodes, vector<int>& graus);
 void refatoraCustos(vector<double>& lambda, int nodes, vvi& costs, vvi& lagrangean_costs, vvi& costs2);
-double somaGraus(vii& solution, int nodes);
+double somaGraus(vector<int>& graus, int nodes);
 void adicionaOrigem(vii& solution, double * w, vvi& costs, int nodes);
-bool compare(int i1, int i2, vector<double>& cost);
 void turn_forbidden(Node *node, vvi& cost);
 
 
