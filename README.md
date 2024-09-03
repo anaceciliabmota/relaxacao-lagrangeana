@@ -19,7 +19,7 @@ The Lagrangian Relaxation is a relaxation method used to find high-quality lower
 - **Output**: The optimal value.
 
 ## Instances
-The [instances](instances) directory contains `.tsp` files used to test and validate the solver.
+The [instances](instances) directory contains `.tsp` files used to test and validate the solver. The [test](test) directory contains the upper bounds used for each instance([instances_ub.txt](test/instances_ub.txt)), the script used to test the instances ([run.sh](test/run.sh)) and the results ([benchmark.txt](test/benchmark.txt)).
 
 ## Credits
 **[Igor Malheiros](https://github.com/igormalheiros)**: For providing the [Kruskal.cpp](src/Kruskal.cpp) and [Kruskal.h](src/Kruskal.h) files to find a Minimum Spanning Tree solution.
